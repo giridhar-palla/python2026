@@ -646,6 +646,30 @@ print(text2.strip("xy"))   # "Python"
 
 ✔ You can strip **any characters**, not just spaces.
 
+#### removeprefix() and removesuffix() (Python 3.9+)
+
+When you want to remove an **exact prefix or suffix** (not individual characters like `strip()`):
+
+```python
+filename = "test_file.txt"
+print(filename.removesuffix(".txt"))    # test_file
+print(filename.removeprefix("test_"))   # file.txt
+```
+
+⚠️ **strip() vs removesuffix() — Important Difference:**
+
+```python
+text = "mississippi"
+
+# strip removes ANY of the given characters from both ends
+print(text.strip("mips"))       # (empty string — stripped all matching chars!)
+
+# removesuffix removes the EXACT suffix only
+print(text.removesuffix("ppi"))  # mississi
+```
+
+✔ Use `removeprefix()` / `removesuffix()` when you want **exact matching**. Use `strip()` when you want to remove **any of the given characters**.
+
 ---
 
 ### 🔸 Split and Join (VERY IMPORTANT FOR INTERVIEWS 🔥)
@@ -1214,6 +1238,26 @@ print(f"Sum = {a + b}")          # Sum = 30
 print(f"Is adult = {age >= 18}") # Is adult = True
 ```
 
+#### Debugging with f-strings — `f"{x=}"` (Python 3.8+)
+
+A quick way to print both the **variable name and its value**:
+
+```python
+name = "Giridhar"
+age = 25
+price = 99.5
+
+print(f"{name=}")    # name='Giridhar'
+print(f"{age=}")     # age=25
+print(f"{price=}")   # price=99.5
+
+# Works with expressions too
+x = 10
+print(f"{x * 2=}")   # x * 2=20
+```
+
+✔ Very useful for **quick debugging** — no need to write `print(f"name = {name}")` manually.
+
 #### Formatting Numbers in f-strings
 
 ```python
@@ -1421,6 +1465,43 @@ print(reversed_text)   # nohtyP
 
 A palindrome reads the same forwards and backwards (e.g., "madam", "racecar").
 
+#### Manual way (two-pointer approach):
+
+```python
+text = "madam"
+text = text.lower()
+left = 0
+right = len(text) - 1
+is_palindrome = True
+
+while left < right:
+    if text[left] != text[right]:
+        is_palindrome = False
+        break
+    left = left + 1
+    right = right - 1
+
+if is_palindrome:
+    print("Palindrome")
+else:
+    print("Not Palindrome")
+```
+
+🧠 How it works:
+- Start with two pointers: one at the **beginning**, one at the **end**
+- Compare characters at both positions
+- If they don't match → not a palindrome
+- Move both pointers inward and repeat
+
+```
+"madam"
+ ↑   ↑     m == m ✅
+  ↑ ↑      a == a ✅
+   ↑       left meets right → Palindrome!
+```
+
+#### Pythonic shortcut:
+
 ```python
 text = "madam"
 
@@ -1430,16 +1511,7 @@ else:
     print("Not Palindrome")
 ```
 
-#### Case-insensitive palindrome check:
-
-```python
-text = "Madam"
-
-if text.lower() == text.lower()[::-1]:
-    print("Palindrome")
-else:
-    print("Not Palindrome")
-```
+✔ Understand the manual two-pointer logic first, then use the shortcut in real code.
 
 ---
 
@@ -1542,6 +1614,38 @@ print(" ".join(text.split()[::-1]))   # easy is Python
 
 Anagram = same characters, different order (e.g., "listen" and "silent").
 
+#### Manual way (frequency counting with dictionary):
+
+```python
+str1 = "listen"
+str2 = "silent"
+
+freq1 = {}
+for char in str1:
+    if char in freq1:
+        freq1[char] = freq1[char] + 1
+    else:
+        freq1[char] = 1
+
+freq2 = {}
+for char in str2:
+    if char in freq2:
+        freq2[char] = freq2[char] + 1
+    else:
+        freq2[char] = 1
+
+if freq1 == freq2:
+    print("Anagrams")
+else:
+    print("Not Anagrams")
+```
+
+🧠 How it works:
+- Count how many times each character appears in both strings
+- If the frequency dictionaries are equal → anagrams
+
+#### Pythonic shortcut:
+
 ```python
 str1 = "listen"
 str2 = "silent"
@@ -1557,6 +1661,8 @@ else:
 print(sorted("listen"))   # ['e', 'i', 'l', 'n', 's', 't']
 print(sorted("silent"))   # ['e', 'i', 'l', 'n', 's', 't']
 ```
+
+✔ Understand the frequency counting logic first, then use the sorted shortcut.
 
 ---
 
@@ -1698,6 +1804,8 @@ print("Numbers:", numbers)   # Numbers: 2 3
 
 ### ✅ 18. Check if All Characters are Unique
 
+#### Manual way:
+
 ```python
 text = "Python"
 is_unique = True
@@ -1712,6 +1820,21 @@ if is_unique:
 else:
     print("Has duplicates")
 ```
+
+#### Pythonic shortcut (using set):
+
+```python
+text = "Python"
+
+if len(set(text)) == len(text):
+    print("All unique")
+else:
+    print("Has duplicates")
+```
+
+🧠 `set()` removes duplicates. If the set length equals the original length, all characters were unique.
+
+✔ Understand the manual counting logic first, then use the set shortcut.
 
 ---
 
